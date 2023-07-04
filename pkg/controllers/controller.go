@@ -41,6 +41,7 @@ func CreateBook(writer http.ResponseWriter, request *http.Request) {
 	utils.ParseBody(request, CreateBook)
 	book := CreateBook.CreateBook()
 	res, _ := json.Marshal(book)
+	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(http.StatusOK)
 	writer.Write(res)
 }
@@ -83,5 +84,9 @@ func UpdateBook(writer http.ResponseWriter, request *http.Request) {
 	if updateBook.Publication != "" {
 		bookDetails.Publication = updateBook.Publication
 	}
-
+	db.Save(&bookDetails)
+	res, _ := json.Marshal(bookDetails)
+	writer.Header().Set("Content-Type", "application/json")
+	writer.WriteHeader(http.StatusOK)
+	writer.Write(res)
 }

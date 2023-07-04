@@ -7,18 +7,10 @@ import (
 )
 
 func ParseBody(r *http.Request, x interface{}) {
-	body, err := io.ReadAll(r.Body)
+	reqBody, _ := io.ReadAll(r.Body)
+	r.Body.Close()
+	err := json.Unmarshal(reqBody, x)
 	if err != nil {
-		err := json.Unmarshal([]byte(body), x)
-		if err != nil {
-			return
-		}
 		return
 	}
-
-	//if body, err :=  err == nil {
-	//	if err := json.Unmarshal([]byte(body), x); err != nil {
-	//		return
-	//	}
-	//}
 }
